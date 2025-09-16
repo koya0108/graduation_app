@@ -11,6 +11,15 @@
 
   <body>
     <%= render 'shared/header' %>
+
+    <% flash.each do |key, message| %>
+      <div class="alert alert-<%= key == "notice" ? "success" : "danger" %> alert-dismissible fade show mt-2"
+          role="alert" style="width:600px; margin:0 auto;">
+        <%= message %>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="閉じる"></button>
+      </div>
+    <% end %>
+
     <%= yield %>
   </body>
 </html>
