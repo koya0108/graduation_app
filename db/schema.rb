@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_09_16_082643) do
+ActiveRecord::Schema[8.0].define(version: 2025_09_16_091315) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -18,6 +18,20 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_16_082643) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "shift_details", force: :cascade do |t|
+    t.bigint "staff_id", null: false
+    t.bigint "shift_id", null: false
+    t.integer "group_id"
+    t.integer "break_room_id"
+    t.datetime "rest_start_time"
+    t.datetime "rest_end_time"
+    t.string "comment"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["shift_id"], name: "index_shift_details_on_shift_id"
+    t.index ["staff_id"], name: "index_shift_details_on_staff_id"
   end
 
   create_table "shifts", force: :cascade do |t|
@@ -55,6 +69,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_16_082643) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "shift_details", "shifts"
+  add_foreign_key "shift_details", "staffs"
   add_foreign_key "shifts", "projects"
   add_foreign_key "shifts", "users"
   add_foreign_key "staffs", "projects"
