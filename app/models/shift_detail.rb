@@ -1,6 +1,7 @@
 class ShiftDetail < ApplicationRecord
   belongs_to :staff
   belongs_to :shift
+  belongs_to :group, optional: true
   # group_id と break_room_id は後で Group / BreakRoom モデルを作るときに関連付け予定
 
   validates :rest_start_time, :rest_end_time, presence: true
