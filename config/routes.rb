@@ -20,12 +20,16 @@ Rails.application.routes.draw do
   get "dashboard", to: "dashboard#index", as: :dashboard
 
   resources :projects, only: [:index, :new, :create, :edit, :update, :destroy] do
-    get 'shift_top', to: 'projects/shifts#top'
+    get 'shift_top', to: 'shifts#top'
 
     resources :shifts, only: [:new, :create, :edit, :update, :destroy] do
       # PDF表示画面のためのURL作成
       member do
         get :pdf
+      end
+      # 月ごとのシフトを返す(Ajaxでシフト一覧を変えるエンドポイント)
+      collection do
+        get :fetch
       end
     end
   end

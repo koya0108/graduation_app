@@ -12,5 +12,11 @@
     background-color: transparent !important;
     border: none !important;
     box-shadow: none !important;
+    }
 }
+
+// 日付と曜日の下線を消す
+.fc .fc-daygrid-day-number,
+.fc .fc-col-header-cell-cushion {
+  text-decoration: none !important;
 }
