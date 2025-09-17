@@ -19,5 +19,7 @@ Rails.application.routes.draw do
 
   get "dashboard", to: "dashboard#index", as: :dashboard
 
-  resources :projects, only: [:index, :new, :create, :edit, :update, :destroy]
+  resources :projects, only: [:index, :new, :create, :edit, :update, :destroy] do
+    get 'shift_top', to: 'projects/shifts#top'
+  end
 end
