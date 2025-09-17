@@ -21,5 +21,12 @@ Rails.application.routes.draw do
 
   resources :projects, only: [:index, :new, :create, :edit, :update, :destroy] do
     get 'shift_top', to: 'projects/shifts#top'
+
+    resources :shifts, only: [:new, :create, :edit, :update, :destroy] do
+      # PDF表示画面のためのURL作成
+      member do
+        get :pdf
+      end
+    end
   end
 end

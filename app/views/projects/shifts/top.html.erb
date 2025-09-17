@@ -1,1 +1,7 @@
-<h1><%= @project.name %>シフト管理TOP</h1>
+<div class="bg-light rounded-3 p-3 mb-4 text-center shadow-sm">
+  <h1 class="h3 mb-0 text-success fw-bold"><%= @project.name %> シフト</h1>
+</div>
+<div class="d-flex justify-content-end mb-3">
+  <%= link_to "TOPへ戻る", projects_path, class: "btn btn-success" %>
+</div>
+<div id="calendar" data-project-id="<%= @project.id %>"></div>
