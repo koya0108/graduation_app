@@ -1,7 +1,5 @@
 import { Calendar } from '@fullcalendar/core'
 import dayGridPlugin from '@fullcalendar/daygrid'
-import timeGridPlugin from '@fullcalendar/timegrid'
-import interactionPlugin from '@fullcalendar/interaction'
 import jaLocale from '@fullcalendar/core/locales/ja'
 
 document.addEventListener('turbo:load', () => {
@@ -10,47 +8,71 @@ document.addEventListener('turbo:load', () => {
 
   const projectId = calendarEl.dataset.projectId
 
-  if (calendarEl) {
-    const calendar = new Calendar(calendarEl, {
-      plugins: [dayGridPlugin],
-      initialView: 'dayGridMonth',
-      locale: jaLocale,
-      headerToolbar: {
-        left: 'prev,next today',
-        center: 'title',
-        right: ''
-      },
-      events: [
-        {
-            title: "作成済みシフト",
-            start: "2025-09-21",
-            extendedProps: {
-                type: "created",
-                url: `/projects/${projectId}/shifts/1/pdf`
-            }
-        },
-        {
-            title: "未作成",
-            start: "2025-09-22",
-            extendedProps: {
+  const calendar = new Calendar(calendarEl, {
+    plugins: [dayGridPlugin],
+    initialView: 'dayGridMonth',
+    locale: jaLocale,
+    headerToolbar: {
+      left: 'prev,next today',
+      center: 'title',
+      right: ''
+    },
+
+    // Ajax でイベントを取得
+    events: function(info, successCallback, failureCallback) {
+      fetch(`/projects/${projectId}/shifts/fetch?start=${info.startStr}&end=${info.endStr}`)
+        .then(response => response.json())
+        .then(data => {
+          let events = []
+
+          // カレンダー範囲の日付を全部「未作成」にする
+          const startDate = new Date(info.start)
+          const endDate = new Date(info.end)
+          for (let d = new Date(startDate); d < endDate; d.setDate(d.getDate() + 1)) {
+            const dateStr = d.toISOString().split('T')[0]
+            events.push({
+              start: dateStr,
+              extendedProps: {
                 type: "new",
-                url: `/projects/${projectId}/shifts/new?date=2025-09-22`
-            }
-        }
-      ],
-      eventContent: function (arg) {
-        let icon = document.createElement("i")
-        if (arg.event.extendedProps.type === "new") {
-            icon.className = "bi bi-plus-circle text-success fs-4"
-        } else {
-            icon.className = "bi bi-file-earmark-pdf text-primary fs-4"
-        }
-        let link = document.createElement("a")
-        link.href = arg.event.extendedProps.url
-        link.appendChild(icon)
-        return { domNodes: [link] }
+                url: `/projects/${projectId}/shifts/new?date=${dateStr}`
+              }
+            })
+          }
+
+          // DBにある日付を「参照アイコン」に上書き
+          data.forEach(shift => {
+            const dateStr = shift.shift_date.split('T')[0]
+            events = events.filter(e => e.start !== dateStr)
+            events.push({
+              start: dateStr,
+              extendedProps: {
+                type: "created",
+                url: `/projects/${projectId}/shifts/${shift.id}/pdf`
+              }
+            })
+          })
+
+          successCallback(events)
+        })
+        .catch(failureCallback)
+    },
+
+    eventBackgroundColor: 'transparent',
+    eventBorderColor: 'transparent',
+
+    eventContent: function(arg) {
+      let icon = document.createElement("i")
+      if (arg.event.extendedProps.type === "new") {
+        icon.className = "bi bi-plus-square text-success fs-4"
+      } else {
+        icon.className = "bi bi-filetype-pdf text-danger fs-3 fw-bold"
       }
-    })
-    calendar.render()
-  }
+      let link = document.createElement("a")
+      link.href = arg.event.extendedProps.url
+      link.appendChild(icon)
+      return { domNodes: [link] }
+    }
+  })
+
+  calendar.render()
 })

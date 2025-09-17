@@ -4,4 +4,6 @@
 <div class="d-flex justify-content-end mb-3">
   <%= link_to "TOPへ戻る", projects_path, class: "btn btn-success" %>
 </div>
-<div id="calendar" data-project-id="<%= @project.id %>"></div>
+<div id="calendar"
+     data-project-id="<%= @project.id %>"
+     data-shifts="<%= @shifts.to_json %>"></div>
