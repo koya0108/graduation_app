@@ -31,7 +31,10 @@ class ShiftsController < ApplicationController
 
   def step2
     data = session[:shift_data]
-    return redirect_to step1_project_shifts_path(@project), alert: "データがありません" if data.nil?
+    if data.blank? || data["staff_ids"].blank? || data["break_rooms"].blank?
+      redirect_to step1_project_shifts_path(@project), alert: "データがありません"
+      return
+    end
 
     @staffs = Staff.where(id: data["staff_ids"])
     @break_rooms = BreakRoom.where(id: data ["break_room_ids"])
