@@ -1,0 +1,50 @@
+<div class="container mt-4" style="max-width: 900px;">
+  <h2 class="mb-4 text-center text-primary">グループ・当日備考入力</h2>
+  <p class="text-center text-muted mb-4">
+    対象日: <span class="fw-bold"><%= @date %></span>
+  </p>
+
+  <%= form_with url: step2_create_project_shifts_path(@project), method: :post, local: true do %>
+    <table class="table table-bordered align-middle">
+      <thead class="table-light">
+        <tr>
+          <th style="width: 25%">スタッフ</th>
+          <th style="width: 25%">
+            グループ
+            <small class="text-muted d-block">同じグループ内で休憩を優先</small>
+          </th>
+          <th style="width: 50%">当日備考</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @staffs.each do |staff| %>
+          <tr>
+            <!-- スタッフ名 -->
+            <td><%= staff.name %></td>
+
+            <!-- 小グループ選択 -->
+            <td>
+              <%= select_tag "group_ids[#{staff.id}]",
+                    options_from_collection_for_select(@groups, :id, :name),
+                    include_blank: true,
+                    class: "form-select" %>
+            </td>
+
+            <!-- 備考欄 (事前コメントを初期値として表示) -->
+            <td>
+              <%= text_field_tag "comments[#{staff.id}]",
+                    staff.comment.presence || "",
+                    class: "form-control form-control-sm comment-input",
+                    maxlength: 15,
+                    placeholder: "15文字以内で入力" %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+
+    <div class="text-center mt-3">
+      <%= submit_tag "登録する", class: "btn btn-success px-5" %>
+    </div>
+  <% end %>
+</div>
