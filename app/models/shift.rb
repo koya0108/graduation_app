@@ -6,5 +6,5 @@ class Shift < ApplicationRecord
   enum :shift_category, { day: 0, night: 1 }
   validates :shift_date, presence: true
   validates :shift_category, presence: true
-  validates :shift_date, uniqueness: { scope: [:project_id, :shift_category], message: "このシフトはすでに存在します"}
+  validates :shift_date, uniqueness: { scope: [ :project_id, :shift_category ], message: "このシフトはすでに存在します" }
 end
