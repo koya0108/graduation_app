@@ -34,7 +34,7 @@ document.addEventListener('turbo:load', () => {
               start: dateStr,
               extendedProps: {
                 type: "new",
-                url: `/projects/${projectId}/shifts/new?date=${dateStr}`
+                url: `/projects/${projectId}/shifts/step1?date=${dateStr}`
               }
             })
           }

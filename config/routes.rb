@@ -27,9 +27,13 @@ Rails.application.routes.draw do
       member do
         get :pdf
       end
-      # 月ごとのシフトを返す(Ajaxでシフト一覧を変えるエンドポイント)
+
       collection do
-        get :fetch
+        get :fetch # 月ごとのシフトを返す(Ajaxでシフト一覧を変えるエンドポイント)
+        get :step1 # STEP1入力画面
+        post :step1_create
+        get :step2 # STEP2入力画面
+        post :step2_create
       end
     end
   end
