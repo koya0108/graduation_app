@@ -29,6 +29,24 @@ class ShiftsController < ApplicationController
     redirect_to step2_project_shifts_path(@project)
   end
 
+  def step2
+    data = session[:shift_data]
+    if data.blank? || data["staff_ids"].blank? || data["break_rooms"].blank?
+      redirect_to step1_project_shifts_path(@project), alert: "データがありません"
+      return
+    end
+
+    @staffs = Staff.where(id: data["staff_ids"])
+    @break_rooms = BreakRoom.where(id: data ["break_room_ids"])
+    @date = data["date"]
+    @groups = Group.where(project_id: @project.id) # 小グループ用
+  end
+
+  def step2_create
+    data = session[:shift_date]
+    # STEP2の入力をマージしてここで実装予定
+  end
+
   private
 
   def set_project

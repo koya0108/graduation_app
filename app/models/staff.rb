@@ -4,5 +4,5 @@ class Staff < ApplicationRecord
 
   validates :name, presence: true
   validates :role, presence: true
-  validates :comment, length: { maximum:15 }
+  validates :comment, length: { maximum: 15 }
 end

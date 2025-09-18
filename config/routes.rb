@@ -17,12 +17,10 @@ Rails.application.routes.draw do
     root to: "devise/sessions#new"
   end
 
-  get "dashboard", to: "dashboard#index", as: :dashboard
+  resources :projects, only: [ :index, :new, :create, :edit, :update, :destroy ] do
+    get "shift_top", to: "shifts#top"
 
-  resources :projects, only: [:index, :new, :create, :edit, :update, :destroy] do
-    get 'shift_top', to: 'shifts#top'
-
-    resources :shifts, only: [:new, :create, :edit, :update, :destroy] do
+    resources :shifts, only: [ :new, :create, :edit, :update, :destroy ] do
       # PDF表示画面のためのURL作成
       member do
         get :pdf
