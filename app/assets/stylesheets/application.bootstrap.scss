@@ -21,3 +21,12 @@
 .fc .fc-col-header-cell-cushion {
   text-decoration: none !important;
 }
+
+// サイドバー
+:root {
+  --sidebar-width: 250px;
+}
+
+body.with-sidebar main {
+  margin-left: var(--sidebar-width);
+}

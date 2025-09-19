@@ -16,3 +16,14 @@ document.addEventListener("turbo:load", () => {
     })
   })
 })
+
+document.addEventListener("turbo:load", () => {
+  const btn = document.getElementById("menu-toggle");
+  const sidebar = document.getElementById("sidebar");
+  if (!btn || !sidebar) return;
+
+  btn.addEventListener("click", () => {
+    sidebar.classList.toggle("d-none");
+    document.body.classList.toggle("with-sidebar", !sidebar.classList.contains("d-none"));
+  });
+});

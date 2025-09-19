@@ -1,12 +1,9 @@
 <header class="navbar navbar-expand-lg navbar-dark bg-primary">
   <div class="container-fluid">
+    <!-- ハンバーガーメニュー（小さい画面用） -->
+    <button class="btn btn-outline-light" id="menu-toggle">☰</button>
     <!-- 左側タイトル -->
     <a class="navbar-brand fw-bold" href="#">ShiftMate</a>
-
-    <!-- ハンバーガーメニュー（小さい画面用） -->
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
 
     <%= button_to "ログアウト",
               destroy_user_session_path,

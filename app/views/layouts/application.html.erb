@@ -9,17 +9,28 @@
     <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
   </head>
 
-  <body>
+  <body class="d-flex flex-column vh-100">
     <%= render 'shared/header' %>
 
-    <% flash.each do |key, message| %>
-      <div class="alert alert-<%= key == "notice" ? "success" : "danger" %> alert-dismissible fade show mt-2"
-          role="alert" style="width:600px; margin:0 auto;">
-        <%= message %>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="閉じる"></button>
-      </div>
-    <% end %>
+    <div class="d-flex flex-grow-1">
+      <!-- ログイン画面は除外 -->
+      <% unless controller_name == "sessions" && action_name == "new" %>
+      <!-- サイドバー -->
+        <%= render 'shared/sidebar' %>
+      <% end %>
 
-    <%= yield %>
+      <!-- メインコンテンツ -->
+      <main class= "flex-grow-1 p-3">
+        <% flash.each do |key, message| %>
+          <div class="alert alert-<%= key == "notice" ? "success" : "danger" %> alert-dismissible fade show mt-2"
+              role="alert" style="width:600px; margin:0 auto;">
+            <%= message %>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="閉じる"></button>
+          </div>
+        <% end %>
+
+        <%= yield %>
+      </main>
+    </div>
   </body>
 </html>
