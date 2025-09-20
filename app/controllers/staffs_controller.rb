@@ -49,4 +49,3 @@ class StaffsController < ApplicationController
     params.require(:staff).permit(:name, :position, :comment)
   end
 end
-
