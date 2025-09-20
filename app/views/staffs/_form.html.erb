@@ -7,12 +7,12 @@
       <%= form_with model: [@project, staff], local: true do |f| %>
         <div class="mb-4">
           <%= f.label :name, "名前", class: "form-label fw-bold" %>
-          <%= f.text_field :name, class: "form-control form-control-lg", placeholder: "例: 山田 太郎" %>
+          <%= f.text_field :name, class: "form-control form-control-lg" %>
         </div>
 
         <div class="mb-4">
-          <%= f.label :role, "役職", class: "form-label fw-bold" %>
-          <%= f.text_field :role, class: "form-control", placeholder: "例: 看護師 / 管理者" %>
+          <%= f.label :position, "役職", class: "form-label fw-bold" %>
+          <%= f.text_field :position, class: "form-control" %>
         </div>
 
         <div class="mb-4">

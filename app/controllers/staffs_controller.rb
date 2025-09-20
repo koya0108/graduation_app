@@ -1,6 +1,6 @@
 class StaffsController < ApplicationController
   before_action :set_project
-  before_action :set_staff, only: [:edit, :update, :destroy]
+  before_action :set_staff, only: [ :edit, :update, :destroy ]
 
   def index
     @staffs = @project.staffs
@@ -46,6 +46,7 @@ class StaffsController < ApplicationController
   end
 
   def staff_params
-    params.require(:staff).permit(:name, :employee_code, :role, :comment)
+    params.require(:staff).permit(:name, :position, :comment)
   end
 end
+

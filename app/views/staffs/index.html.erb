@@ -17,7 +17,7 @@
             <td class="fw-bold">
               <i class="bi bi-person-fill me-2 text-secondary"></i><%= staff.name %>
             </td>
-            <td><%= staff.role.presence || "未設定" %></td>
+            <td><%= staff.position.presence || "未設定" %></td>
             <td><%= staff.comment.presence || "-" %></td>
             <td class="text-center">
               <%= link_to "編集", edit_project_staff_path(@project, staff), class: "btn btn-sm btn-outline-success me-2" %>
