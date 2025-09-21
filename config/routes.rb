@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  get "break_rooms/index"
+  get "break_rooms/edit"
+  get "break_rooms/new"
   get "groups/index"
   get "groups/new"
   get "groups/edit"

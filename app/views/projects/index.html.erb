@@ -1,30 +1,37 @@
-<div class="container mt-4">
+<div class="container mt-5" style="max-width: 700px;">
   <!-- 見出し部分 -->
   <div class="text-center mb-4 pb-2 border-bottom">
-    <h2 class="fw-bold text-dark d-inline-block">
-      <i class="bi bi-building me-2"></i> プロジェクト(施設)一覧
+    <h2 class="fw-bold text-dark">
+      <i class="bi bi-building text-primary me-2"></i> プロジェクト(施設)一覧
     </h2>
   </div>
 
-  <table class="table table-hover table-bordered align-middle mx-auto" style="width: 600px;">
-    <thead class="table-dark">
-    </thead>
-    <tbody>
+  <% if @projects.any? %>
+    <ul class="list-group shadow-sm">
       <% @projects.each do |project| %>
-        <tr>
-          <td>
-            <div class="d-flex justify-content-between align-items-center">
-              <%= link_to project.name, project_shift_top_path(project),
-                          class: "text-decoration-underline text-dark" %>
-              <%= link_to "編集", edit_project_path(project), class: "btn btn-sm btn-success" %>
-            </div>
-          </td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
+        <li class="list-group-item d-flex justify-content-between align-items-center py-3">
+          <!-- プロジェクト名（リンク付き） -->
+          <span class="fw-bold fs-5">
+            <i class="bi bi-folder-fill text-warning me-2"></i>
+            <%= link_to project.name, project_shift_top_path(project),
+                        class: "text-decoration-none text-dark" %>
+          </span>
 
-  <div class="mt-3 text-center">
-    <%= link_to "新規追加", new_project_path, class: "btn btn-warning" %>
+          <!-- 編集ボタン -->
+          <%= link_to "編集", edit_project_path(project),
+                      class: "btn btn-sm btn-success" %>
+        </li>
+      <% end %>
+    </ul>
+  <% else %>
+    <div class="alert alert-info text-center shadow-sm mt-4">
+      まだプロジェクトが登録されていません。
+    </div>
+  <% end %>
+
+  <!-- 新規追加ボタン -->
+  <div class="mt-4 text-center">
+    <%= link_to "新規追加", new_project_path,
+                class: "btn btn-warning btn-lg px-5 shadow fw-bold" %>
   </div>
 </div>

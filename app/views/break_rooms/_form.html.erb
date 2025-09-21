@@ -1,0 +1,10 @@
+<%= form_with(model: [@project, break_room], local: true) do |f| %>
+  <div class="mb-4">
+    <%= f.label :name, "休憩場所名", class: "form-label fw-bold" %>
+    <%= f.text_field :name, class: "form-control form-control-lg", placeholder: "例: 休憩室A" %>
+  </div>
+
+  <div class="text-center">
+    <%= f.submit "保存する", class: "btn btn-success btn-lg px-5 shadow-sm" %>
+  </div>
+<% end %>

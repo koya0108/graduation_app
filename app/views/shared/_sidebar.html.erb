@@ -12,43 +12,35 @@
 
     <!-- メニューリスト -->
     <ul class="nav flex-column mt-2">
-      <% if controller_name == "projects" && action_name == "index" %>
-        <!-- プロジェクトTOP用 -->
-        <li class="nav-item">
-          <%= link_to projects_path, class: "nav-link d-flex align-items-center text-dark" do %>
-            <i class="bi bi-building me-2"></i> プロジェクト
-          <% end %>
-        </li>
-        <li class="nav-item">
-          <%= link_to "#", class: "nav-link d-flex align-items-center text-dark" do %>
-            <i class="bi bi-person-gear me-2"></i> 管理者情報
-          <% end %>
-        </li>
-      <% else %>
-        <!-- プロジェクト選択後用 -->
-        <li class="nav-item">
-          <%= link_to projects_path, class: "nav-link d-flex align-items-center text-dark" do %>
-            <i class="bi bi-building me-2"></i> プロジェクト
-          <% end %>
-        </li>
-        <% if defined?(@project) && @project.present? %>
-          <li class="nav-item">
-            <%= link_to project_staffs_path(@project), class: "nav-link d-flex align-items-center text-dark" do %>
-              <i class="bi bi-people me-2"></i> スタッフ設定
-            <% end %>
-          </li>
-          <li class="nav-item">
-            <%= link_to project_groups_path(@project), class: "nav-link d-flex align-items-center text-dark" do %>
-              <i class="bi bi-sliders me-2"></i> グループ設定
-            <% end %>
-          </li>
-          <li class="nav-item">
-            <%= link_to project_break_rooms_path(@project), class: "nav-link d-flex align-items-center text-dark" do %>
-              <i class="bi bi-sliders me-2"></i> 休憩室設定
-            <% end %>
-          </li>
+
+      <!-- プロジェクト一覧リンク（常に表示） -->
+      <li class="nav-item">
+        <%= link_to projects_path, class: "nav-link d-flex align-items-center text-dark" do %>
+          <i class="bi bi-building me-2"></i> プロジェクト
         <% end %>
+      </li>
+
+      <!-- プロジェクトが選択されているときのみ表示 -->
+      <% if @project&.persisted? %>
+        <li class="nav-item">
+          <%= link_to project_staffs_path(@project), class: "nav-link d-flex align-items-center text-dark" do %>
+            <i class="bi bi-people me-2"></i> スタッフ設定
+          <% end %>
+        </li>
+
+        <li class="nav-item">
+          <%= link_to project_groups_path(@project), class: "nav-link d-flex align-items-center text-dark" do %>
+            <i class="bi bi-sliders me-2"></i> グループ設定
+          <% end %>
+        </li>
+
+        <li class="nav-item">
+          <%= link_to project_break_rooms_path(@project), class: "nav-link d-flex align-items-center text-dark" do %>
+            <i class="bi bi-sliders me-2"></i> 休憩室設定
+          <% end %>
+        </li>
       <% end %>
+
     </ul>
   </div>
 </nav>
