@@ -1,0 +1,19 @@
+<div class="container mt-5" style="max-width: 500px;">
+  <div class="card shadow-lg border-0">
+    <div class="card-header bg-primary text-white text-center fs-5">
+      グループ情報入力
+    </div>
+    <div class="card-body p-4">
+      <%= form_with model: [@project, @group], local: true do |f| %>
+        <div class="mb-4">
+          <%= f.label :name, "グループ名", class: "form-label fw-bold" %>
+          <%= f.text_field :name, class: "form-control form-control-lg", placeholder: "例: Aグループ" %>
+        </div>
+
+        <div class="text-center">
+          <%= f.submit "保存する", class: "btn btn-success btn-lg px-5 shadow-sm" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

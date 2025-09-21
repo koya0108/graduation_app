@@ -38,8 +38,13 @@
             <% end %>
           </li>
           <li class="nav-item">
-            <%= link_to "#", class: "nav-link d-flex align-items-center text-dark" do %>
-              <i class="bi bi-sliders me-2"></i> 条件設定
+            <%= link_to project_groups_path(@project), class: "nav-link d-flex align-items-center text-dark" do %>
+              <i class="bi bi-sliders me-2"></i> グループ設定
+            <% end %>
+          </li>
+          <li class="nav-item">
+            <%= link_to project_break_rooms_path(@project), class: "nav-link d-flex align-items-center text-dark" do %>
+              <i class="bi bi-sliders me-2"></i> 休憩室設定
             <% end %>
           </li>
         <% end %>

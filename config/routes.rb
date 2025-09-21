@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  get "groups/index"
+  get "groups/new"
+  get "groups/edit"
   devise_for :users
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
@@ -21,6 +24,10 @@ Rails.application.routes.draw do
     get "shift_top", to: "shifts#top"
 
     resources :staffs, only: [ :index, :new, :create, :edit, :update, :destroy ]
+
+    resources :groups, only: [ :index, :new, :create, :edit, :update, :destroy ]
+
+    resources :break_rooms, only: [ :index, :new, :create, :edit, :update, :destroy ]
 
     resources :shifts, only: [ :new, :create, :edit, :update, :destroy ] do
       # PDF表示画面のためのURL作成
