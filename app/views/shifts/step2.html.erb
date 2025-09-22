@@ -5,43 +5,51 @@
   </p>
 
   <%= form_with url: step2_create_project_shifts_path(@project), method: :post, local: true do %>
-    <table class="table table-bordered align-middle">
-      <thead class="table-light">
-        <tr>
-          <th style="width: 25%">スタッフ</th>
-          <th style="width: 25%">
-            グループ
-            <small class="text-muted d-block">同じグループ内で休憩を優先</small>
-          </th>
-          <th style="width: 50%">当日備考</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% @staffs.each do |staff| %>
+    <div class="table-responsive">
+      <table class="table table-bordered align-middle shadow-sm">
+        <thead class="table-light">
           <tr>
-            <!-- スタッフ名 -->
-            <td><%= staff.name %></td>
-
-            <!-- 小グループ選択 -->
-            <td>
-              <%= select_tag "group_ids[#{staff.id}]",
-                    options_from_collection_for_select(@groups, :id, :name),
-                    include_blank: true,
-                    class: "form-select" %>
-            </td>
-
-            <!-- 備考欄 (事前コメントを初期値として表示) -->
-            <td>
-              <%= text_field_tag "comments[#{staff.id}]",
-                    staff.comment.presence || "",
-                    class: "form-control form-control-sm comment-input",
-                    maxlength: 15,
-                    placeholder: "15文字以内で入力" %>
-            </td>
+            <th style="width: 25%">
+              <span class="fw-bold d-block">スタッフ</span>
+              <small class="text-muted">　</small>
+            </th>
+            <th style="width: 25%">
+              <span class="fw-bold d-block">グループ</span>
+              <small class="text-muted">同じグループ内で休憩を優先</small>
+            </th>
+            <th style="width: 50%">
+              <span class="fw-bold d-block">当日備考</span>
+              <small class="text-muted">15文字以内で入力</small>
+            </th>
           </tr>
-        <% end %>
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          <% @staffs.each do |staff| %>
+            <tr>
+              <!-- スタッフ名 -->
+              <td class="fw-semibold"><%= staff.name %></td>
+
+              <!-- 小グループ選択 -->
+              <td>
+                <%= select_tag "group_ids[#{staff.id}]",
+                      options_from_collection_for_select(@groups, :id, :name),
+                      include_blank: "選択なし",
+                      class: "form-select form-select-sm" %>
+              </td>
+
+              <!-- 備考欄 -->
+              <td>
+                <%= text_field_tag "comments[#{staff.id}]",
+                      staff.comment.presence || "",
+                      class: "form-control form-control-sm comment-input",
+                      maxlength: 15,
+                      placeholder: "入力してください" %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
 
     <div class="text-center mt-3">
       <%= submit_tag "登録する", class: "btn btn-success px-5" %>
