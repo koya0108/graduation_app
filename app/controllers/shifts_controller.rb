@@ -43,8 +43,34 @@ class ShiftsController < ApplicationController
   end
 
   def step2_create
-    data = session[:shift_date]
-    # STEP2の入力をマージしてここで実装予定
+    data = session[:shift_data]
+    return redirect_to step1_project_shifts_path(@project), alert: "データがありません" if data.blank?
+
+    staffs = Staff.where(id: data["staff_ids"])
+    break_rooms = BreakRoom.where(id: data["break_rooms"])
+    date = data["date"]
+
+    # step2入力値
+    staff_groups = params[:group_ids] || {}
+    staff_comments = params[:comments] || {}
+
+    # サービスクラス呼び出し
+    shift = ShiftBuilder.new(
+      project: @project,
+      date: date,
+      staffs: staffs,
+      break_rooms: break_rooms,
+      staff_groups: staff_groups,
+      staff_comments: staff_comments,
+      user: current_user
+    ).build
+
+    redirect_to project_shift_path(@project, shift), notice: "シフトを自動作成しました"
+  end
+
+  def show
+    @shift = @project.shifts.find(params[:id])
+    @shift_details = @shift.shift_details.includes(:staff, :break_room)
   end
 
   private
