@@ -44,13 +44,13 @@ class ShiftBuilder
   def distance_to_midnight(time)
     # 0時を基準に近さを数値化
     midnight = time.change(hour: 0)
-    [(time - midnight).abs, (time - (midnight + 1.day)).abs].min
+    [ (time - midnight).abs, (time - (midnight + 1.day)).abs ].min
   end
 
   def generate_slots
     start_time = Time.zone.local(@date.year, @date.month, @date.day, 18, 0, 0) # ← JST基準で18:00固定
     end_time = Time.zone.local((@date + 1).year, (@date + 1).month, (@date + 1).day, 9, 0, 0)
-    
+
     slots = []
     while start_time < end_time
       slots << { start: start_time, end: start_time + SLOT_LENGTH }
@@ -110,4 +110,3 @@ class ShiftBuilder
     end
   end
 end
-
