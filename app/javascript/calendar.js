@@ -47,7 +47,7 @@ document.addEventListener('turbo:load', () => {
               start: dateStr,
               extendedProps: {
                 type: "created",
-                url: `/projects/${projectId}/shifts/${shift.id}/pdf`
+                url: `/projects/${projectId}/shifts/${shift.id}/confirm`
               }
             })
           })

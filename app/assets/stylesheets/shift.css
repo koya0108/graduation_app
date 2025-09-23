@@ -1,0 +1,11 @@
+/* shift.css */
+.time-col {
+  width: 45px;
+  min-width: 45px;
+  max-width: 45px;
+  font-size: 0.8rem;
+}
+
+.comment-cell {
+  max-width: 150px;
+}
