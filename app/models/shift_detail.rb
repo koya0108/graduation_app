@@ -11,7 +11,9 @@ class ShiftDetail < ApplicationRecord
   private
 
   def rest_time_order
-    if rest_start_time.present? && rest_end_time.present? && rest_start_time >= rest_end_time
+    return if rest_start_time.blank? || rest_end_time.blank?
+
+    if rest_end_time <= rest_start_time
       errors.add(:rest_end_time, "は開始時間より後にしてください")
     end
   end

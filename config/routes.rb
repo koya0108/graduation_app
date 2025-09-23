@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+
   devise_for :users
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
@@ -16,6 +17,8 @@ Rails.application.routes.draw do
   devise_scope :user do
     root to: "devise/sessions#new"
   end
+
+  resources :shift_details, only: [ :update ]
 
   resources :projects, only: [ :index, :new, :create, :edit, :update, :destroy ] do
     get "shift_top", to: "shifts#top"

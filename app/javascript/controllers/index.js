@@ -6,3 +6,6 @@ import { application } from "./application"
 
 import HelloController from "./hello_controller"
 application.register("hello", HelloController)
+
+import ShiftDetailController from "./shift_detail_controller"
+application.register("shift-detail", ShiftDetailController)
