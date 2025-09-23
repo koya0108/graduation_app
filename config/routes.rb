@@ -1,10 +1,4 @@
 Rails.application.routes.draw do
-  get "break_rooms/index"
-  get "break_rooms/edit"
-  get "break_rooms/new"
-  get "groups/index"
-  get "groups/new"
-  get "groups/edit"
   devise_for :users
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
@@ -33,9 +27,10 @@ Rails.application.routes.draw do
     resources :break_rooms, only: [ :index, :new, :create, :edit, :update, :destroy ]
 
     resources :shifts, only: [ :new, :create, :edit, :update, :destroy, :show ] do
-      # PDF表示画面のためのURL作成
       member do
-        get :pdf
+        get :confirm # 確定版を表示
+        patch :finalize # 完了で確定
+        patch :reopen # 編集で再度下書きに戻る
       end
 
       collection do

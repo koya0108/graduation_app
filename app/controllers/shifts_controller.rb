@@ -73,6 +73,29 @@ class ShiftsController < ApplicationController
     @shift_details = @shift.shift_details.includes(:staff, :break_room)
   end
 
+  def confirm
+    @shift = @project.shifts.find(params[:id])
+    @shift_details = @shift.shift_details.includes(:staff, :break_rooom)
+  end
+
+  def finalize
+    @shift = @project.shifts.find(params[:id])
+    @shift.update!(status: :finalized)
+    redirect_to confirm_project_shift_path(@project, @shift), notice: "シフトを確定しました"
+  end
+
+  def reopen
+    @shift = @project.shifts.find(params[:id])
+    @shift.update!(status: :draft)
+    redirect_to project_shift_path(@project, @shift)
+  end
+
+  def destroy
+    @shift = @project.shifts.find(params[:id])
+    @shift.destroy
+    redirect_to project_shift_top_path(@project), notice: "シフトを削除しました"
+  end
+
   private
 
   def set_project
