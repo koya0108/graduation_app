@@ -1,0 +1,2 @@
+module ShiftDetailsHelper
+end

@@ -71,6 +71,7 @@ class ShiftsController < ApplicationController
   def show
     @shift = @project.shifts.find(params[:id])
     @shift_details = @shift.shift_details.includes(:staff, :break_room)
+    @break_rooms = @project.break_rooms
   end
 
   def confirm

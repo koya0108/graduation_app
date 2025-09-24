@@ -1,6 +1,6 @@
 <h2><%= @shift.shift_date.strftime("%Y-%m-%d") %> のシフト</h2>
 
-<table class="table table-bordered table-hover text-center">
+<table class="table table-bordered table-hover text-center" data-controller="shift-detail">
   <thead>
     <tr>
       <th class="bg-secondary text-white">スタッフ</th>
@@ -9,6 +9,7 @@
       <% (18..33).each do |h| %>
         <th class="bg-secondary text-white time-col"><%= "#{h % 24}:00" %></th>
       <% end %>
+      <th class="bg-secondary text-white">編集</th>
     </tr>
   </thead>
 
@@ -20,29 +21,58 @@
     <% grouped.each do |group_id, details| %>
       <!-- グループ行 -->
       <tr style="background-color: white; font-weight: bold;">
-        <td colspan="19"><%= Group.find_by(id: group_id)&.name || "未所属" %></td>
+        <td colspan="20"><%= Group.find_by(id: group_id)&.name || "未所属" %></td>
       </tr>
 
       <% details.each do |detail| %>
-        <tr>
+        <tr data-shift-detail-id="<%= detail.id %>">
           <!-- スタッフ名 -->
           <td class="text-start"><%= detail.staff.name %></td>
 
           <!-- 休憩室 -->
-          <td><%= detail.break_room&.name || "-" %></td>
+          <td>
+            <%= select_tag "break_room_id",
+                  options_from_collection_for_select(@break_rooms, :id, :name, detail.break_room_id),
+                  data: { action: "change->shift-detail#update",
+                          shift_detail_id: detail.id,
+                          field: "break_room_id" } %>
+          </td>
 
-          <!-- コメント（なければ - を表示） -->
+          <!-- コメント -->
           <td><%= detail.comment.presence || "-" %></td>
 
           <!-- 時間軸セル -->
           <% (18..33).each do |h| %>
             <% current_time = Time.zone.parse("#{detail.rest_start_time.to_date} #{h % 24}:00") %>
-            <% if (detail.rest_start_time...detail.rest_end_time).cover?(current_time) %>
-              <td class="bg-info"></td>
-            <% else %>
-              <td></td>
-            <% end %>
+            <% active = (detail.rest_start_time...detail.rest_end_time).cover?(current_time) %>
+            <td class="time-cell <%= 'bg-info' if active %>" data-hour="<%= h %>"></td>
           <% end %>
+
+          <!-- 編集用セレクト -->
+          <td>
+            <% start_h = detail.rest_start_time.hour + (detail.rest_start_time.to_date > @shift.shift_date ? 24 : 0) %>
+            <% end_h   = detail.rest_end_time.hour   + (detail.rest_end_time.to_date > @shift.shift_date ? 24 : 0) %>
+
+            開始:
+            <%= select_tag "rest_start_time",
+                  options_for_select(
+                    (18..33).map { |h| ["#{h % 24}:00", h] },
+                    start_h
+                  ),
+                  data: { action: "change->shift-detail#update",
+                          shift_detail_id: detail.id,
+                          field: "rest_start_time" } %><br>
+
+            終了:
+            <%= select_tag "rest_end_time",
+                  options_for_select(
+                    (18..33).map { |h| ["#{h % 24}:00", h] },
+                    end_h
+                  ),
+                  data: { action: "change->shift-detail#update",
+                          shift_detail_id: detail.id,
+                          field: "rest_end_time" } %>
+          </td>
         </tr>
       <% end %>
     <% end %>
