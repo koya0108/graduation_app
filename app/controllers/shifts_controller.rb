@@ -16,8 +16,8 @@ class ShiftsController < ApplicationController
   end
 
   def step1
-    @staffs = Staff.all
-    @break_rooms = BreakRoom.all
+    @staffs = @project.staffs
+    @break_rooms = @project.break_rooms
   end
 
   def step1_create
@@ -36,8 +36,8 @@ class ShiftsController < ApplicationController
       return
     end
 
-    @staffs = Staff.where(id: data["staff_ids"])
-    @break_rooms = BreakRoom.where(id: data ["break_room_ids"])
+    @staffs = @project.staffs.where(id: data["staff_ids"])
+    @break_rooms = @project.break_rooms.where(id: data ["break_room_ids"])
     @date = data["date"]
     @groups = Group.where(project_id: @project.id) # 小グループ用
   end
