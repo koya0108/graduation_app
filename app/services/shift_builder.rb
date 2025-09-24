@@ -82,7 +82,8 @@ class ShiftBuilder
         end
         next unless staff # 全員割り当て済なら終了
 
-        group_id = @staff_groups[staff.id.to_s].presence || "ungrouped"
+        raw_gid = @staff_groups[staff.id.to_s]
+        group_id = raw_gid.present? ? raw_gid.to_i : nil
 
         shift.shift_details.create!(
             staff: staff,

@@ -72,6 +72,11 @@
                   data: { action: "change->shift-detail#update",
                           shift_detail_id: detail.id,
                           field: "rest_end_time" } %>
+
+            <!-- グループID hiddenで保持 -->
+            <%= hidden_field_tag "group_id",
+                  detail.group_id,
+                  data: { shift_detail_id: detail.id, field: "group_id" } %>
           </td>
         </tr>
       <% end %>

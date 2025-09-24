@@ -7,6 +7,11 @@ export default class extends Controller {
     const field = select.dataset.field
     const value = select.value
 
+    // 同じ行の hidden の group_id を拾う
+    const row = select.closest("tr[data-shift-detail-id]")
+    const groupInput = row.querySelector('input[name="group_id"]')
+    const groupId = groupInput ? groupInput.value : null
+
     // 前回の値を保存（必ず変更前を記録する）
     if (!select.dataset.previousValue) {
       select.dataset.previousValue = value
@@ -18,7 +23,12 @@ export default class extends Controller {
         "Content-Type": "application/json",
         "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]').content
       },
-      body: JSON.stringify({ shift_detail: { [field]: value } })
+      body: JSON.stringify({
+        shift_detail: {
+          [field]: value,
+          group_id: groupId   // ← 常に送る
+        }
+      })
     })
       .then(res => res.json())
       .then(data => {

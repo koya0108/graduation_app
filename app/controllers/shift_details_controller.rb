@@ -32,7 +32,10 @@ class ShiftDetailsController < ApplicationController
   end
 
   def shift_detail_params
-    params.require(:shift_detail).permit(:rest_start_time, :rest_end_time, :break_room_id)
+    permitted = params.require(:shift_detail).permit(:rest_start_time, :rest_end_time, :break_room_id, :group_id)
+    # 未所属は nil に統一する
+    permitted[:group_id] = nil if permitted[:group_id].blank? || permitted[:group_id].to_i == 0
+    permitted
   end
 
   # "26" → 翌日の 2:00 に変換
