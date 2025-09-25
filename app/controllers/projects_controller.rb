@@ -1,20 +1,19 @@
 class ProjectsController < ApplicationController
-  before_action :authenticate_user!
   before_action :set_project, only: [ :edit, :update, :destroy ]
 
   def index
-    @projects = Project.all
+    @projects = current_user.projects
   end
 
   def new
-    @project = Project.new
+    @project = current_user.projects.new
   end
 
   def edit
   end
 
   def create
-    @project = Project.new(project_params)
+    @project = current_user.projects.new(project_params)
     if @project.save
       redirect_to projects_path, notice: "プロジェクトを作成しました"
     else
@@ -31,7 +30,7 @@ class ProjectsController < ApplicationController
   end
 
   def destroy
-    @project = Project.find(params[:id])
+    @project = current_user.projects.find(params[:id])
     @project.destroy
     redirect_to projects_path, notice: "プロジェクトを削除しました"
   end
@@ -40,7 +39,7 @@ class ProjectsController < ApplicationController
 
   # URLのidから該当プロジェクトを取得する共通処理
   def set_project
-    @project = Project.find(params[:id])
+    @project = current_user.projects.find(params[:id])
   end
 
   # ストロングパラメータnameだけを受け取る

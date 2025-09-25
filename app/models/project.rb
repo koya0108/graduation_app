@@ -1,4 +1,5 @@
 class Project < ApplicationRecord
+  belongs_to :user
   has_many :staffs, dependent: :destroy
   has_many :shifts, dependent: :destroy
   has_many :groups, dependent: :destroy

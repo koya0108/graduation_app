@@ -5,5 +5,7 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable,
          authentication_keys: [ :employee_code ]
 
+  has_many :projects, dependent: :destroy
+
   validates :employee_code, presence: true, uniqueness: true
 end

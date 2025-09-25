@@ -30,7 +30,7 @@ class GroupsController < ApplicationController
 
   def update
     if @group.update(group_params)
-      redirect_to project_groups_path(@project), notice: "スタッフを更新しました"
+      redirect_to project_groups_path(@project)
     else
       render :edit, status: :unprocessable_entity
     end
@@ -39,7 +39,7 @@ class GroupsController < ApplicationController
   private
 
   def set_project
-    @project = Project.find(params[:project_id])
+    @project = current_user.projects.find(params[:project_id])
   end
 
   def set_group
