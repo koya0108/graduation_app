@@ -24,7 +24,7 @@ class StaffsController < ApplicationController
 
   def update
     if @staff.update(staff_params)
-      redirect_to project_staffs_path(@project), notice: "スタッフを更新しました"
+      redirect_to project_staffs_path(@project)
     else
       render :edit, status: :unprocessable_entity
     end
@@ -38,7 +38,7 @@ class StaffsController < ApplicationController
   private
 
   def set_project
-    @project = Project.find(params[:project_id])
+    @project = current_user.projects.find(params[:project_id])
   end
 
   def set_staff
