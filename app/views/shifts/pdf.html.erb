@@ -1,0 +1,44 @@
+<h2><%= @shift.shift_date.strftime("%Y-%m-%d") %> のシフト</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>スタッフ</th>
+      <th>休憩室</th>
+      <th>コメント</th>
+      <% (18..33).each do |h| %>
+        <th><%= "#{h % 24}:00" %></th>
+      <% end %>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% grouped = @shift.shift_details.includes(:staff, :break_room)
+                   .group_by { |d| d.group_id }
+                   .sort_by { |g, _| g.nil? ? 1 : 0 } %>
+
+    <% grouped.each do |group_id, details| %>
+      <!-- グループ行 -->
+      <tr class="group-row">
+        <td colspan="19"><%= Group.find_by(id: group_id)&.name || "未所属" %></td>
+      </tr>
+
+      <% details.each do |detail| %>
+        <tr>
+          <td><%= detail.staff.name %></td>
+          <td><%= detail.break_room&.name || "-" %></td>
+          <td><%= detail.comment.presence || "-" %></td>
+
+          <% (18..33).each do |h| %>
+            <% current_time = Time.zone.parse("#{detail.rest_start_time.to_date} #{h % 24}:00") %>
+            <% if (detail.rest_start_time...detail.rest_end_time).cover?(current_time) %>
+              <td class="rest-cell"></td>
+            <% else %>
+              <td></td>
+            <% end %>
+          <% end %>
+        </tr>
+      <% end %>
+    <% end %>
+  </tbody>
+</table>

@@ -67,3 +67,7 @@ group :test do
 end
 
 gem "devise"
+
+gem "wicked_pdf"
+
+# gem "wkhtmltopdf-binary" 
