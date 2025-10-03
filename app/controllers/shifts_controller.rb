@@ -77,6 +77,19 @@ class ShiftsController < ApplicationController
   def confirm
     @shift = @project.shifts.find(params[:id])
     @shift_details = @shift.shift_details.includes(:staff, :break_room)
+
+    respond_to do |format|
+      format.html # confirm.html.erbをそのまま表示
+      format.pdf do
+        render pdf: "shift_#{@shift.id}",
+               template: "shifts/pdf",
+               formats: [:html],
+               layout: "pdf",
+               page_size: "A4",
+               orientation: "Landscape",
+               disposition: "inline"
+      end
+    end
   end
 
   def finalize
