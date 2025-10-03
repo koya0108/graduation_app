@@ -1,0 +1,22 @@
+# Git情報
+.git
+.gitignore
+
+# ログやキャッシュ
+log/*
+tmp/*
+storage/*
+node_modules/
+
+# テスト関連は本番で不要
+test/
+spec/
+
+# ドキュメント系
+doc/*
+README.md
+*.md
+*.pdf
+
+# その他不要なもの
+coverage/
