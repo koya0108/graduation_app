@@ -81,7 +81,7 @@ class ShiftsController < ApplicationController
       format.pdf do
         render pdf: "shift_#{@shift.id}",
                template: "shifts/pdf",
-               formats: [:html],
+               formats: [ :html ],
                layout: "pdf",
                page_size: "A4",
                orientation: "Landscape",
