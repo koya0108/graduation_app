@@ -1,5 +1,5 @@
-<div class="container mt-4" style="max-width: 900px;">
-  <h2 class="mb-4 text-center text-primary">グループ・当日備考入力</h2>
+<div class="container mt-4 w-50">
+  <h2 class="mb-4 text-center text-primary">グループ入力</h2>
   <p class="text-center text-muted mb-4">
     対象日: <span class="fw-bold"><%= @date %></span>
   </p>
@@ -17,10 +17,6 @@
               <span class="fw-bold d-block">グループ</span>
               <small class="text-muted">同じグループ内で休憩を優先</small>
             </th>
-            <th style="width: 50%">
-              <span class="fw-bold d-block">当日備考</span>
-              <small class="text-muted">15文字以内で入力</small>
-            </th>
           </tr>
         </thead>
         <tbody>
@@ -35,15 +31,6 @@
                       options_from_collection_for_select(@groups, :id, :name),
                       include_blank: "選択なし",
                       class: "form-select form-select-sm" %>
-              </td>
-
-              <!-- 備考欄 -->
-              <td>
-                <%= text_field_tag "comments[#{staff.id}]",
-                      staff.comment.presence || "",
-                      class: "form-control form-control-sm comment-input",
-                      maxlength: 15,
-                      placeholder: "入力してください" %>
               </td>
             </tr>
           <% end %>

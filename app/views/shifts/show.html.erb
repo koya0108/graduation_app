@@ -39,7 +39,15 @@
           </td>
 
           <!-- コメント -->
-          <td><%= detail.comment.presence || "-" %></td>
+          <td>
+            <%= text_field_tag "comment",
+                  detail.comment,
+                  maxlength: 15,
+                  class: "form-control form-control-sm",
+                  data: { action: "blur->shift-detail#update", # フォーカス外れたら更新
+                          shift_detail_id: detail.id,
+                          field: "comment" } %>
+          </td>
 
           <!-- 時間軸セル -->
           <% (18..33).each do |h| %>
