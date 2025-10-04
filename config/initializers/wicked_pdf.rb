@@ -31,7 +31,7 @@ WickedPdf.configure do |config|
     config.exe_path = '/app/bin/wkhtmltopdf'
   else
     # ローカル環境 (Mac/Linux)
-    config.exe_path = '/usr/local/bin/wkhtmltopdf' # Homebrew ならここ
+    config.exe_path = '/usr/bin/wkhtmltopdf' # Homebrew ならここ
     # Ubuntu なら '/usr/bin/wkhtmltopdf'
   end
 
