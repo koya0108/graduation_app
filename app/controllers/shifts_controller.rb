@@ -52,7 +52,6 @@ class ShiftsController < ApplicationController
 
     # step2入力値
     staff_groups = params[:group_ids] || {}
-    staff_comments = params[:comments] || {}
 
     # サービスクラス呼び出し
     shift = ShiftBuilder.new(
@@ -61,7 +60,6 @@ class ShiftsController < ApplicationController
       staffs: staffs,
       break_rooms: break_rooms,
       staff_groups: staff_groups,
-      staff_comments: staff_comments,
       user: current_user
     ).build
 

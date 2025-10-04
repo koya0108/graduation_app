@@ -4,13 +4,12 @@ class ShiftBuilder
 
   # サービスクラスの初期化処理
   # コントローラーから渡されたデータをインスタンス編集に保存
-  def initialize(project:, date:, staffs:, break_rooms:, staff_groups:, staff_comments:, user:)
+  def initialize(project:, date:, staffs:, break_rooms:, staff_groups:, user:)
     @project = project
     @date = date.to_date
     @staffs = staffs
     @break_rooms = break_rooms
     @staff_groups = staff_groups # STEP2フォームで入力したデータ
-    @staff_comments = staff_comments
     @user = user
     @shift_category = "night" # MVPでは夜勤固定
     @groups = staffs.group_by { |s| staff_groups[s.id.to_s] || "ungrouped" } # グループ毎にスタッフをまとめたハッシュ
@@ -91,7 +90,7 @@ class ShiftBuilder
             break_room: room,
             rest_start_time: slot[:start],
             rest_end_time: slot[:end],
-            comment: @staff_comments[staff.id.to_s]
+            comment: staff.comment
             )
 
         @assigned_staff_ids << staff.id # ここで割り当て済に追加

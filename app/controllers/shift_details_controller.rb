@@ -32,7 +32,7 @@ class ShiftDetailsController < ApplicationController
   end
 
   def shift_detail_params
-    permitted = params.require(:shift_detail).permit(:rest_start_time, :rest_end_time, :break_room_id, :group_id)
+    permitted = params.require(:shift_detail).permit(:rest_start_time, :rest_end_time, :break_room_id, :group_id, :comment)
     # 未所属は nil に統一する
     permitted[:group_id] = nil if permitted[:group_id].blank? || permitted[:group_id].to_i == 0
     permitted
@@ -46,6 +46,7 @@ class ShiftDetailsController < ApplicationController
     Time.zone.local(base_date.year, base_date.month, base_date.day, hour) + day_offset.days
   end
 
+  # JSONレスポンス
   def to_detail_json(detail)
     {
       id: detail.id,
@@ -57,7 +58,8 @@ class ShiftDetailsController < ApplicationController
         detail.rest_end_time.hour == (h % 24) &&
         (h >= 24) == (detail.rest_end_time.to_date > detail.shift.shift_date)
       end,
-      break_room_id: detail.break_room_id
+      break_room_id: detail.break_room_id,
+      comment: detail.comment
     }
   end
 end
