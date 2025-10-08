@@ -4,7 +4,12 @@
     対象日: <span class="fw-bold"><%= @date %></span>
   </p>
 
-  <%= form_with url: step2_create_project_shifts_path(@project), method: :post, local: true do %>
+  <%= form_with(
+        url: @shift&.persisted? ? update_step2_project_shift_path(@project,  @shift) : step2_create_project_shifts_path(@project),
+        method: :post,
+        local: true
+      ) do %>
+
     <div class="table-responsive">
       <table class="table table-bordered align-middle shadow-sm">
         <thead class="table-light">

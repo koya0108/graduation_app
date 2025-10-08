@@ -1,4 +1,4 @@
-<h2><%= @shift.shift_date.strftime("%Y-%m-%d") %> のシフト</h2>
+<h2><%= @shift.shift_date.strftime("%Y-%m-%d") %></h2>
 
 <table class="table table-bordered table-hover text-center" data-controller="shift-detail">
   <thead>
@@ -92,12 +92,21 @@
   </tbody>
 </table>
 
-<div class="mt-3 d-flex justify-content-center">
+<div class="mt-4 d-flex justify-content-center gap-3">
   <% if @shift.draft? %>
+    <!-- スタッフ追加ボタン -->
+    <%= link_to edit_step1_project_shift_path(@project, @shift),
+                class: "btn btn-warning text-white d-flex align-items-center gap-2 px-4 py-2 shadow-sm border-0" do %>
+      <i class="bi bi-person-plus-fill"></i>
+      <span>スタッフ追加</span>
+    <% end %>
+
+    <!-- 完了ボタン -->
     <%= button_to finalize_project_shift_path(@project, @shift),
                   method: :patch,
-                  class: "btn btn-success d-flex align-items-center px-4" do %>
-      <i class="bi bi-check-circle me-2"></i> 完了
+                  class: "btn btn-success d-flex align-items-center gap-2 px-4 py-2 shadow-sm border-0" do %>
+      <i class="bi bi-check-circle"></i>
+      <span>確定</span>
     <% end %>
   <% end %>
 </div>

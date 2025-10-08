@@ -16,30 +16,90 @@ class ShiftsController < ApplicationController
   end
 
   def step1
+    # 古いセッションを自動リセット
+    if session[:shift_data].present?
+      prev_date = session[:shift_data]["date"]
+      # URLパラメータの日付が異なる、または新規アクセスならリセット
+      if params[:date].present? && prev_date != params[:date]
+        session.delete(:shift_data)
+      end
+    end
+
     @staffs = @project.staffs
     @break_rooms = @project.break_rooms
+
+    data = session[:shift_data]
+    if data.present?
+      @selected_staff_ids = data["staff_ids"] || []
+      @selected_break_room_ids = data["break_room_ids"] || []
+      @date = data["date"]
+    else
+      @selected_staff_ids = []
+      @selected_break_room_ids = []
+      @date = params[:date]
+    end
   end
 
   def step1_create
     session[:shift_data] = {
       date: params[:date],
       staff_ids: params[:staff_ids],
-      break_rooms: params[:break_room_ids]
+      break_room_ids: params[:break_room_ids]
     }
     redirect_to step2_project_shifts_path(@project)
   end
 
+  def edit_step1
+    @shift = @project.shifts.find(params[:id])
+
+    session[:shift_data] = {
+      date: @shift.shift_date.strftime("%Y-%m-%d"),
+      staff_ids: @shift.shift_details.pluck(:staff_id),
+      break_room_ids: @shift.shift_details.pluck(:break_room_id)
+    }
+
+    redirect_to step1_project_shifts_path(@project, shift_id: @shift.id)
+  end
+
   def step2
     data = session[:shift_data]
-    if data.blank? || data["staff_ids"].blank? || data["break_rooms"].blank?
+    if data.blank? || data["staff_ids"].blank? || data["break_room_ids"].blank?
       redirect_to step1_project_shifts_path(@project), alert: "データがありません"
       return
     end
 
     @staffs = @project.staffs.where(id: data["staff_ids"])
-    @break_rooms = @project.break_rooms.where(id: data ["break_room_ids"])
+    @break_rooms = @project.break_rooms.where(id: data["break_room_ids"])
     @date = data["date"]
     @groups = Group.where(project_id: @project.id) # 小グループ用
+    @shift = @project.shifts.find_by(id: params[:shift_id])
+  end
+
+  def update_step2
+    data = session[:shift_data]
+    return redirect_to step1_project_shifts_path(@project), alert: "データがありません" if data.blank?
+
+    @shift = @project.shifts.find(params[:id])
+    staffs = Staff.where(id: data["staff_ids"])
+    break_rooms = BreakRoom.where(id: data["break_room_ids"])
+    date = data["date"]
+    staff_groups = params[:group_ids] || {}
+
+    @shift.transaction do
+      @shift.shift_details.destroy_all
+
+      ShiftBuilder.new(
+        project: @project,
+        date: date,
+        staffs: staffs,
+        break_rooms: break_rooms,
+        staff_groups: staff_groups,
+        user: current_user
+      ).rebuild(@shift)
+    end
+
+    session.delete(:shift_data)
+    redirect_to project_shift_path(@project, @shift), notice: "シフトを更新しました"
   end
 
   def step2_create
@@ -47,23 +107,38 @@ class ShiftsController < ApplicationController
     return redirect_to step1_project_shifts_path(@project), alert: "データがありません" if data.blank?
 
     staffs = Staff.where(id: data["staff_ids"])
-    break_rooms = BreakRoom.where(id: data["break_rooms"])
+    break_rooms = BreakRoom.where(id: data["break_room_ids"])
     date = data["date"]
-
-    # step2入力値
     staff_groups = params[:group_ids] || {}
 
-    # サービスクラス呼び出し
-    shift = ShiftBuilder.new(
-      project: @project,
-      date: date,
-      staffs: staffs,
-      break_rooms: break_rooms,
-      staff_groups: staff_groups,
-      user: current_user
-    ).build
+    existing_shift = @project.shifts.find_by(shift_date: date)
 
-    redirect_to project_shift_path(@project, shift), notice: "シフトを自動作成しました"
+    if existing_shift # 既存シフト→上書き更新
+      ShiftBuilder.new(
+        project: @project,
+        date: date,
+        staffs: staffs,
+        break_rooms: break_rooms,
+        staff_groups: staff_groups,
+        user: current_user
+      ).rebuild(existing_shift)
+      target_shift = existing_shift
+      notice_message = "シフトを更新しました"
+    else
+      # 新規シフト→新しく作成
+      target_shift = ShiftBuilder.new(
+        project: @project,
+        date: date,
+        staffs: staffs,
+        break_rooms: break_rooms,
+        staff_groups: staff_groups,
+        user: current_user
+      ).build
+      notice_message = "シフトを作成しました"
+    end
+
+    session.delete(:shift_data)
+    redirect_to project_shift_path(@project, target_shift), notice: notice_message
   end
 
   def show

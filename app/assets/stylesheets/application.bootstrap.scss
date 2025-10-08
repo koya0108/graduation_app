@@ -27,3 +27,27 @@
 body.with-sidebar main {
   margin-left: var(--sidebar-width);
 }
+
+// トースト通知
+.toast-container {
+  z-index: 2000;
+}
+
+.flash-toast {
+  opacity: 0.95;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  border-radius: 8px;
+  font-size: 14px;
+  min-width: 280px;
+  padding: 0.5rem 1rem;
+}
+
+/* 成功通知（緑） */
+.bg-success {
+  background: linear-gradient(135deg, #198754, #28a745);
+}
+
+/* エラー通知（赤） */
+.bg-danger {
+  background: linear-gradient(135deg, #dc3545, #e74c3c);
+}
