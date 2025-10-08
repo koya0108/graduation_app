@@ -38,7 +38,35 @@ class ShiftBuilder
     shift
   end
 
+  def rebuild(existing_shift) # 既存のシフト詳細を削除して再構築
+    existing_shift.shift_details.destroy_all
+
+    existing_shift.update!(
+      shift_date: @date,
+      user: @user,
+      shift_category: @shift_category,
+      status: :draft
+    )
+
+    assign_all(existing_shift)
+  end
+
+
   private
+
+  def assign_all(shift)
+    slots = generate_slots
+    midnight_slots = slots.select { |s| midnight?(s) }
+    other_slots = slots.reject { |s| midnight?(s) }
+
+    other_slots.sort_by! { |slot| distance_to_midnight(slot[:start]) }
+
+    @assigned_staff_ids = []
+
+    assign_staffs(shift, midnight_slots)
+    assign_staffs(shift, other_slots)
+    shift
+  end
 
   def distance_to_midnight(time)
     # 0時を基準に近さを数値化

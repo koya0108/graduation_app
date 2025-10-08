@@ -33,6 +33,8 @@ Rails.application.routes.draw do
         get :confirm # 確定版を表示
         patch :finalize # 完了で確定
         patch :reopen # 編集で再度下書きに戻る
+        get :edit_step1 # 既存シフトをstep1に戻す
+        post :update_step2 # step2完了後に既存シフトを更新
       end
 
       collection do
