@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
-  devise_for :users
+  devise_for :users, controllers: {
+    confirmations: "users/confirmations"
+  }
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
@@ -16,6 +18,9 @@ Rails.application.routes.draw do
   devise_scope :user do
     root to: "devise/sessions#new"
   end
+
+  # ログインユーザーのみの管理（単数）
+  resource :user, only: [ :edit, :update ]
 
   resources :shift_details, only: [ :update ]
 
@@ -45,5 +50,9 @@ Rails.application.routes.draw do
         post :step2_create
       end
     end
+  end
+
+  if Rails.env.development?
+    mount LetterOpenerWeb::Engine, at: "/letter_opener"
   end
 end
