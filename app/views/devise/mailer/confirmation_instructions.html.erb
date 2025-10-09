@@ -1,5 +1,25 @@
-<p>Welcome <%= @email %>!</p>
+<!DOCTYPE html>
+<html>
+  <body style="font-family: sans-serif; line-height: 1.6;">
+    <h2 style="color: #333;">ShiftMate アカウント情報変更の確認</h2>
 
-<p>You can confirm your account email through the link below:</p>
+    <p><%= @email %> 様</p>
 
-<p><%= link_to 'Confirm my account', confirmation_url(@resource, confirmation_token: @token) %></p>
+    <p>
+      このメールは、ShiftMateでアカウント情報が変更された際に送信されています。<br>
+      以下のリンクをクリックして、変更を確定してください。
+    </p>
+
+    <p style="margin: 20px 0;">
+      <%= link_to '変更を確定する', confirmation_url(@resource, confirmation_token: @token), style: "display: inline-block; padding: 10px 20px; background-color: #0d6efd; color: #fff; text-decoration: none; border-radius: 4px;" %>
+    </p>
+
+    <p>
+      ※このメールに心当たりがない場合は、このまま破棄してください。
+    </p>
+
+    <p style="margin-top: 20px;">――――――――――――――――――――――<br>
+      ShiftMate 運営チーム
+    </p>
+  </body>
+</html>
