@@ -20,7 +20,7 @@ Rails.application.routes.draw do
   end
 
   # ログインユーザーのみの管理（単数）
-  resource :user, only: [:edit, :update]
+  resource :user, only: [ :edit, :update ]
 
   resources :shift_details, only: [ :update ]
 

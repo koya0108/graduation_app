@@ -14,4 +14,3 @@ class Users::ConfirmationsController < Devise::ConfirmationsController
     projects_path # 認証後のリダイレクト先
   end
 end
-
