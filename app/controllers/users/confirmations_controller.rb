@@ -1,16 +1,23 @@
 class Users::ConfirmationsController < Devise::ConfirmationsController
   def show
-    super do |user|
-      if user.pending_employee_code.present?
-        user.update(employee_code: user.pending_employee_code, pending_employee_code: nil)
-      end
+    self.resource = resource_class.confirm_by_token(params[:confirmation_token])
+
+    # email変更ではなく、employee_codeのみの変更だった場合はconfirmエラーを無視する
+    if resource.unconfirmed_email.blank? && resource.pending_employee_code.present? && resource.errors.present?
+       resource.errors.clear
     end
-  end
 
-  protected
+    if resource.errors.empty?
+      if resource.pending_employee_code.present?
+        resource.update(employee_code: resource.pending_employee_code, pending_employee_code: nil)
+      end
 
-  def after_confirmation_path_for(resource_name, resource)
-    flash[:notice] = "ユーザー情報が更新されました。"
-    projects_path # 認証後のリダイレクト先
+      set_flash_message!(:notice, :confirmed)
+      sign_in(resource_name, resource) unless user_signed_in?
+      redirect_to edit_user_path, notice: "ユーザー情報が更新されました"
+    else
+      flash[:alert] = "確認リンクが無効または期限切れです。再度メールを送信してください。"
+      redirect_to edit_user_path
+    end
   end
 end
