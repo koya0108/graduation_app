@@ -20,17 +20,33 @@ class UsersController < ApplicationController
       return
     end
 
+    # email重複チェック
+    if changes.key?("email") && User.where(email: changes["email"]).exists?
+      flash.now[:alert] = "このメールアドレスは既に使用されています"
+      render :edit, status: :unprocessable_entity
+      return
+    end
+
+    # ログインID重複チェック
+    if changes.key?("employee_code") && User.where(employee_code: changes["employee_code"]).exists?
+      flash.now[:alert] = "このログインIDは既に使用されています"
+      render :edit, status: :unprocessable_entity
+      return
+    end
+
+    @user.assign_attributes(changes.except("employee_code"))
+    @user.pending_employee_code = changes["employee_code"] if changes.key?("employee_code")
+
+    # バリデーションチェックを先に実行
+    unless @user.valid?
+      flash.now[:alert] = @user.errors.full_messages.join(", ")
+      render :edit, status: :unprocessable_entity
+      return
+    end
+
     if changes.key?("email") || changes.key?("employee_code")
-      # 一旦変更内容を仮保存(confirmableが確定するまで保留)
-      if changes.key?("employee_code")
-        @user.pending_employee_code = changes["employee_code"]
-      end
-
-      @user.assign_attributes(changes.except("employee_code"))
-
       # 確認メール送信
       @user.send_confirmation_instructions
-
       redirect_to edit_user_path, notice: "確認メールを送信しました。メール内のリンクをクリックして変更を確定してください。"
     else
       if @user.update(changes)
