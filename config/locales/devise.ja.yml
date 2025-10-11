@@ -1,0 +1,47 @@
+ja:
+  devise:
+    confirmations:
+      user:
+        confirmed: "メールアドレスが確認されました。"
+        send_instructions: "確認メールを送信しました。メールを確認してください。"
+        send_paranoid_instructions: "メールアドレスが登録されている場合、確認メールを送信しました。"
+      confirmed: "メールアドレスが確認されました。"
+      send_instructions: "確認メールを送信しました。メールを確認してください。"
+      send_paranoid_instructions: "メールアドレスが登録されている場合、確認メールを送信しました。"
+
+    passwords:
+      user:
+        send_instructions: "パスワード再設定のメールを送信しました。メールを確認してください。"
+        send_paranoid_instructions: "登録されたメールアドレスにパスワード再設定の案内を送信しました。"
+        updated: "パスワードが変更されました。ShiftMateにログインしました。"
+        updated_not_active: "パスワードが変更されました。"
+        no_token: "このページにはアクセスできません。再度メールからアクセスしてください。"
+      send_instructions: "パスワード再設定のメールを送信しました。メールを確認してください。"
+      send_paranoid_instructions: "登録されたメールアドレスにパスワード再設定の案内を送信しました。"
+      updated: "パスワードが変更されました。ShiftMateにログインしました。"
+      updated_not_active: "パスワードが変更されました。"
+      no_token: "このページにはアクセスできません。再度メールからアクセスしてください。"
+
+    sessions:
+      user:
+        signed_in: "ログインしました。"
+        signed_out: "ログアウトしました。"
+        already_signed_out: "すでにログアウト済みです。"
+      signed_in: "ログインしました。"
+      signed_out: "ログアウトしました。"
+      already_signed_out: "すでにログアウト済みです。"
+
+    failure:
+      user:
+        already_authenticated: "すでにログインしています。"
+        inactive: "アカウントが有効化されていません。"
+        invalid: "IDまたはパスワードが正しくありません。"
+        not_found_in_database: "IDまたはパスワードが正しくありません。"
+        timeout: "一定時間が経過したため、再度ログインしてください。"
+        unauthenticated: "ログインまたは登録が必要です。"
+      already_authenticated: "すでにログインしています。"
+      inactive: "アカウントが有効化されていません。"
+      invalid: "IDまたはパスワードが正しくありません。"
+      not_found_in_database: "IDまたはパスワードが正しくありません。"
+      timeout: "一定時間が経過したため、再度ログインしてください。"
+      unauthenticated: "ログインまたは登録が必要です。"
